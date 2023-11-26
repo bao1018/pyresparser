@@ -1,55 +1,243 @@
 from nltk.corpus import stopwords
 
 # Omkar Pathak
-NAME_PATTERN = [{'POS': 'PROPN'}, {'POS': 'PROPN'}]
+NAME_PATTERN = [{"POS": "PROPN"}, {"POS": "PROPN"}]
 
 # Education (Upper Case Mandatory)
 EDUCATION = [
-            'BE', 'B.E.', 'B.E', 'BS', 'B.S', 'ME', 'M.E',
-            'M.E.', 'MS', 'M.S', 'BTECH', 'MTECH',
-            'SSC', 'HSC', 'CBSE', 'ICSE', 'X', 'XII'
-        ]
+    "BE",
+    "B.E.",
+    "B.E",
+    "BS",
+    "B.S",
+    "ME",
+    "M.E",
+    "M.E.",
+    "MS",
+    "M.S",
+    "BTECH",
+    "MTECH",
+    "SSC",
+    "HSC",
+    "CBSE",
+    "ICSE",
+    "X",
+    "XII",
+]
 
-NOT_ALPHA_NUMERIC = r'[^a-zA-Z\d]'
+NOT_ALPHA_NUMERIC = r"[^a-zA-Z\d]"
 
-NUMBER = r'\d+'
+NUMBER = r"\d+"
 
 # For finding date ranges
-MONTHS_SHORT = r'''(jan)|(feb)|(mar)|(apr)|(may)|(jun)|(jul)
-                   |(aug)|(sep)|(oct)|(nov)|(dec)'''
-MONTHS_LONG = r'''(january)|(february)|(march)|(april)|(may)|(june)|(july)|
-                   (august)|(september)|(october)|(november)|(december)'''
-MONTH = r'(' + MONTHS_SHORT + r'|' + MONTHS_LONG + r')'
-YEAR = r'(((20|19)(\d{2})))'
+MONTHS_SHORT = r"""(jan)|(feb)|(mar)|(apr)|(may)|(jun)|(jul)
+                   |(aug)|(sep)|(oct)|(nov)|(dec)"""
+MONTHS_LONG = r"""(january)|(february)|(march)|(april)|(may)|(june)|(july)|
+                   (august)|(september)|(october)|(november)|(december)"""
+MONTH = r"(" + MONTHS_SHORT + r"|" + MONTHS_LONG + r")"
+YEAR = r"(((20|19)(\d{2})))"
 
-STOPWORDS = set(stopwords.words('english'))
+STOPWORDS = set(stopwords.words("english"))
 
 RESUME_SECTIONS_PROFESSIONAL = [
-                    'experience',
-                    'education',
-                    'interests',
-                    'professional experience',
-                    'publications',
-                    'skills',
-                    'certifications',
-                    'objective',
-                    'career objective',
-                    'summary',
-                    'leadership'
-                ]
+    "experience",
+    "education",
+    "interests",
+    "professional experience",
+    "publications",
+    "skills",
+    "certifications",
+    "objective",
+    "career objective",
+    "summary",
+    # 'leadership'
+]
+JOB_TITLES = ['Accountant', 'Administrator', 'Advisor', 'Agent', 'Analyst', 
+              'Apprentice', 'Architect', 'Assistant', 'Associate', 'Auditor',
+                'Bartender', 'Biologist', 'Bookkeeper', 'Buyer', 'Carpenter', 
+                'Cashier', 'CEO', 'Clerk', 'Co-op', 'Co-Founder', 'Consultant', 
+                'Coordinator', 'COO','CTO', 'Developer', 'Designer', 'Director', 
+                'Driver', 'Editor', 'Electrician', 'Engineer', 'Executive', 'Extern', 
+                'Founder', 'Freelancer', 'Head', 'Intern', 'Janitor', 'Journalist', 'Laborer',
+                  'Lawyer', 'Lead', 'Manager', 'Mechanic', 'Member', 'Nurse', 'Officer', 'Operator',
+                    'Operation', 'Photographer', 'President', 'Producer', 'Recruiter', 'Representative',
+                      'Researcher', 'Sales', 'Server', 'Scientist', 'Specialist', 'Supervisor', 'Teacher', 
+                      'Technician', 'Trader', 'Trainee', 'Treasurer', 'Tutor', 'Vice', 'VP', 'Volunteer', 'Webmaster', 'Worker']
 
 RESUME_SECTIONS_GRAD = [
-                    'accomplishments',
-                    'experience',
-                    'education',
-                    'interests',
-                    'projects',
-                    'professional experience',
-                    'publications',
-                    'skills',
-                    'certifications',
-                    'objective',
-                    'career objective',
-                    'summary',
-                    'leadership'
-                ]
+    "accomplishments",
+    "experience",
+    "education",
+    "interests",
+    "projects",
+    "professional experience",
+    "publications",
+    "skills",
+    "certifications",
+    "objective",
+    "career objective",
+    "summary",
+    # 'leadership'
+]
+US_STATE_NAMES = [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming",
+]
+
+US_STATE_ABBR = [
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+]
+
+US_CITIES = [
+    "New York City",
+    "Los Angeles",
+    "Chicago",
+    "Houston",
+    "Phoenix",
+    "Philadelphia",
+    "San Antonio",
+    "San Diego",
+    "Dallas",
+    "San Jose",
+    "Austin",
+    "Jacksonville",
+    "San Francisco",
+    "Indianapolis",
+    "Columbus",
+    "Fort Worth",
+    "Charlotte",
+    "Seattle",
+    "Denver",
+    "El Paso",
+    "Detroit",
+    "Washington, D.C.",
+    "Boston",
+    "Memphis",
+    "Nashville",
+    "Portland",
+    "Oklahoma City",
+    "Las Vegas",
+    "Baltimore",
+    "Louisville",
+    "Milwaukee",
+    "Albuquerque",
+    "Tucson",
+    "Fresno",
+    "Sacramento",
+    "Mesa",
+    "Kansas City",
+    "Atlanta",
+    "Long Beach",
+    "Raleigh",
+    "Omaha",
+    "Miami",
+    "Virginia Beach",
+    "Minneapolis",
+    "Oakland",
+    "Tulsa",
+    "Tampa",
+    "Arlington",
+    "New Orleans",
+    "Wichita",
+    "Silicon Valley",
+    "Cincinnati",
+]
+
+COMPANY_TITLES = ['Company', 'Corporation', 'Co.,Ltd.','Limited', 'Ltd', 'Inc', 'LLC','LLP', 'PTY']

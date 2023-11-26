@@ -171,5 +171,5 @@ def resume_result_wrapper(args):
 
 
 def main():
-    cli_obj = ResumeParserCli()
+    cli_obj = ()
     pprint(cli_obj.extract_resume_data())

@@ -9,6 +9,7 @@ import docx2txt
 from datetime import datetime
 from dateutil import relativedelta
 from . import constants as cs
+from typing import List
 from pdfminer.converter import TextConverter
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
@@ -185,18 +186,27 @@ def extract_entity_sections_grad(text):
     entities = {}
     key = False
     for phrase in text_split:
+    
         if len(phrase) == 1:
             p_key = phrase
         else:
-            p_key = set(phrase.lower().split()) & set(cs.RESUME_SECTIONS_GRAD)
+            if len(phrase) < 20:
+                p_key = set(phrase.lower().split()) & set(cs.RESUME_SECTIONS_GRAD)
+            else:
+                p_key = set()
+            # print(p_key, '__')
         try:
             p_key = list(p_key)[0]
+            # print(p_key, '|')
+     
         except IndexError:
             pass
         if p_key in cs.RESUME_SECTIONS_GRAD:
-            entities[p_key] = []
+            if not p_key in entities:
+                entities[p_key] = []
             key = p_key
         elif key and phrase.strip():
+            # print(phrase, '*')
             entities[key].append(phrase)
 
     # entity_key = False
@@ -344,7 +354,7 @@ def extract_name(nlp_text, matcher):
     '''
     pattern = [cs.NAME_PATTERN]
 
-    matcher.add('NAME', None, *pattern)
+    matcher.add('NAME', pattern)
 
     matches = matcher(nlp_text)
 
@@ -494,3 +504,106 @@ def extract_experience(resume_text):
         if x and 'experience' in x.lower()
     ]
     return x
+
+def extract_detail_experience(experience: List[str]):
+    result = []
+    for txts in experience:
+        sub_txts = split_text(txts)
+        for txt in sub_txts:
+            update_result(result, txt)
+
+    return result
+
+def get_last_element(array):
+    return array[-1] if array else None
+
+def remove_special_chars(s):
+    return re.sub(r'[,.|]', '', s)
+
+def has_job_title(text):
+
+    if len(text) > 80:
+        return False
+    # Assuming item has an attribute 'text' which is a string
+    words = text.split()  # Splitting text into words
+    for i in range(len(words)):
+        words[i] = remove_special_chars(words[i]).capitalize()
+
+    # for job_title in cs.JOB_TITLES:
+    #     for keyword in words:
+    #         if keyword in job_title or job_title in keyword:
+    #             return True
+    # return False
+    # print(any(job_title in words for job_title in cs.JOB_TITLES))
+    return any(job_title in words for job_title in cs.JOB_TITLES)
+
+def has_org_info(text):
+    if len(text) > 80:
+        return False
+    words = text.split()  # Splitting text into words
+    for i in range(len(words)):
+        words[i] = remove_special_chars(words[i])
+    return any(company_title.upper() in words for company_title in cs.COMPANY_TITLES)
+
+def has_location_info(text):
+    if len(text) > 80:
+        return False
+    words = text.split()  # Splitting text into words
+    for i in range(len(words)):
+        words[i] = remove_special_chars(words[i])
+    return any(state_name in words for state_name in cs.US_STATE_NAMES)or any(state_name_abbr in words for state_name_abbr in cs.US_STATE_ABBR) or any(city_name in words for city_name in cs.US_CITIES)
+
+def is_time_range(text):
+    pattern1 = r'\b\d{4}(0[1-9]|1[0-2])\s*(~|-)\s*\d{4}(0[1-9]|1[0-2])\b'
+    pattern2 = r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December),\s*\d{4}\s*(to|-)\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December),\s*\d{4}|Present|Now\b'
+    pattern3 = r'(?P<fmonth>\w+.\d+)\s*(\D|to)\s*(?P<smonth>\w+.\d+|present)'
+
+    return bool(re.search(pattern1, text.strip()) or re.search(pattern2, text.strip()) or re.search(pattern3, text.strip()))
+
+
+def update_result(result, txt):
+    last_item = get_last_element(result)
+    info_type = get_info_type(txt)
+    # print(len(txt))
+    # print(txt, info_type)
+
+    if info_type != 'desc':
+        if(last_item is None or last_item[info_type] != ''):
+            result.append(create_empty_entry(info_type, txt))
+        else:
+            last_item[info_type] = txt
+        
+    else:
+        if last_item is None: 
+            print("WARNING - Missing Experience Section Headline(title, org, etc)")
+            result.append(create_empty_entry('desc', txt))
+            last_item = get_last_element(result)
+            
+        last_item[info_type].append(txt)
+
+
+def split_text(text):
+    if(len(text) > 75):
+        return [text]
+    if '|' in text:
+        return text.split('|')
+    # elif '-' in text:
+    #     return text.split('-')
+    else:
+        return [text]
+
+def get_info_type(txt):
+    if has_job_title(txt):
+        return 'title'
+    if has_org_info(txt):
+        return 'org'
+    if is_time_range(txt):
+        return 'time_period'
+    if has_location_info(txt):
+        return 'geo_location'
+    return 'desc'
+
+def create_empty_entry(info_type, txt):
+    entry = { "title": '', "time_period": '', "geo_location": '', "org": '', 'desc': [] }
+    entry[info_type] = txt if info_type != 'desc' else [txt]
+    return entry

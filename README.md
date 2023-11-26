@@ -1,4 +1,4 @@
-# pyresparser
+# pyresparser with Latest Spacy
 
 ```
 A simple resume parser used for extracting information from resumes
@@ -29,21 +29,42 @@ Built with ❤︎ and :coffee: by  [Omkar Pathak](https://github.com/OmkarPathak
 
 # Installation
 
-- You can install this package using
+## Precondition
+
+- python 3.11
+- Spacy 3.7
+- Poetry
+
+## Install dependencies
+- You can install the tool
 
 ```bash
-pip install pyresparser
+poetry install
 ```
 
 - For NLP operations we use spacy and nltk. Install them using below commands:
 
 ```bash
 # spaCy
-python -m spacy download en_core_web_sm
+poetry run python -m spacy download en_core_web_sm
 
 # nltk
-python -m nltk.downloader words
-python -m nltk.downloader stopwords
+poetry run python -m nltk.downloader words
+poetry run python -m nltk.downloader stopwords
+```
+
+# Test
+
+Use below command
+```bash
+poetry run python test_parser.py
+```
+
+# Train the Model
+
+Use below command to re-train the spacy model
+```bash
+poetry run python pyresparser/create_spacy_corpus.py
 ```
 
 # Documentation
@@ -145,7 +166,7 @@ If you have found my softwares to be of any use to you, do consider helping me p
 
 | PayPal | <a href="https://paypal.me/omkarpathak27" target="_blank"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="Donate via PayPal!" title="Donate via PayPal!" /></a> |
 |:-------------------------------------------:|:-------------------------------------------------------------:|
-| ₹ (INR)  | <a href="https://www.instamojo.com/@omkarpathak27/" target="_blank"><img src="https://www.soldermall.com/images/pic-online-payment.jpg" alt="Donate via Instamojo" title="Donate via instamojo" /></a> |
+| ₹ (INR)  | <a href="https://www.instamojo.com/@omkarpathak/" target="_blank"><img src="https://www.soldermall.com/images/pic-online-payment.jpg" alt="Donate via Instamojo" title="Donate via instamojo" /></a> |
 
 # Stargazer over time
 [![Stargazers over time](https://starchart.cc/OmkarPathak/pyresparser.svg)](https://starchart.cc/OmkarPathak/pyresparser)

@@ -34,6 +34,7 @@ class ResumeParser(object):
             'company_names': None,
             'no_of_pages': None,
             'total_experience': None,
+            'detail_experience': None,
         }
         self.__resume = resume
         if not isinstance(self.__resume, io.BytesIO):
@@ -108,6 +109,7 @@ class ResumeParser(object):
 
         try:
             self.__details['experience'] = entities['experience']
+            self.__details['detail_experience'] = utils.extract_detail_experience(entities['experience'])
             try:
                 exp = round(
                     utils.get_total_experience(entities['experience']) / 12,
