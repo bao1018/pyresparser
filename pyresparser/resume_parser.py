@@ -26,7 +26,7 @@ class ResumeParser(object):
             'name': None,
             'email': None,
             'mobile_number': None,
-            'skills': None,
+            # 'skills': None,
             'college_name': None,
             'degree': None,
             'designation': None,
@@ -58,11 +58,11 @@ class ResumeParser(object):
         name = utils.extract_name(self.__nlp, matcher=self.__matcher)
         email = utils.extract_email(self.__text)
         mobile = utils.extract_mobile_number(self.__text, self.__custom_regex)
-        skills = utils.extract_skills(
-                    self.__nlp,
-                    self.__noun_chunks,
-                    self.__skills_file
-                )
+        # skills = utils.extract_skills(
+        #             self.__nlp,
+        #             self.__noun_chunks,
+        #             self.__skills_file
+        #         )
         # edu = utils.extract_education(
         #               [sent.string.strip() for sent in self.__nlp.sents]
         #       )
@@ -81,7 +81,7 @@ class ResumeParser(object):
         self.__details['mobile_number'] = mobile
 
         # extract skills
-        self.__details['skills'] = skills
+        # self.__details['skills'] = skills
 
         # extract college name
         try:

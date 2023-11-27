@@ -42,7 +42,7 @@ def extract_text_from_pdf(pdf_path):
                     converter = TextConverter(
                         resource_manager,
                         fake_file_handle,
-                        codec='utf-8',
+                        # codec='utf-8',
                         laparams=LAParams()
                     )
                     page_interpreter = PDFPageInterpreter(
