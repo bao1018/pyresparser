@@ -13,9 +13,10 @@ class ResumeParser(object):
 
     def __init__(
         self,
-        resume,
+        resume=None,
         skills_file=None,
-        custom_regex=None
+        custom_regex=None,
+        text_raw=None
     ):
         nlp = spacy.load('en_core_web_sm')
         custom_nlp = spacy.load(os.path.dirname(os.path.abspath(__file__)))
@@ -37,11 +38,18 @@ class ResumeParser(object):
             'detail_experience': None,
         }
         self.__resume = resume
-        if not isinstance(self.__resume, io.BytesIO):
-            ext = os.path.splitext(self.__resume)[1].split('.')[1]
-        else:
-            ext = self.__resume.name.split('.')[1]
-        self.__text_raw = utils.extract_text(self.__resume, '.' + ext)
+        # if not isinstance(self.__resume, io.BytesIO):
+        #     ext = os.path.splitext(self.__resume)[1].split('.')[1]
+        # else:
+        #     ext = self.__resume.name.split('.')[1]
+        # self.__text_raw = utils.extract_text(self.__resume, '.' + ext)
+        self.__text_raw = text_raw
+        if not self.__text_raw:
+            if not isinstance(self.__resume, io.BytesIO):
+                ext = os.path.splitext(self.__resume)[1].split('.')[1]
+            else:
+                ext = self.__resume.name.split('.')[1]
+            self.__text_raw = utils.extract_text(self.__resume, '.' + ext)
         self.__text = ' '.join(self.__text_raw.split())
         self.__nlp = nlp(self.__text)
         self.__custom_nlp = custom_nlp(self.__text_raw)
@@ -120,9 +128,9 @@ class ResumeParser(object):
                 self.__details['total_experience'] = 0
         except KeyError:
             self.__details['total_experience'] = 0
-        self.__details['no_of_pages'] = utils.get_number_of_pages(
-                                            self.__resume
-                                        )
+        # self.__details['no_of_pages'] = utils.get_number_of_pages(
+        #                                     self.__resume
+        #                                 )
         return
 
 
